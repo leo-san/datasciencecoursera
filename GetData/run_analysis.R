@@ -9,7 +9,7 @@ library(dplyr)
 testdata1 <- read.table("./UCI HAR Dataset/test/X_test.txt")
 #subject_test.txt contains the subject labels (1-30) for the test set
 testdata2 <- read.table("./UCI HAR Dataset/test/subject_test.txt")
-#y_test contains activities (1-6) for the test set
+#y_test contains activity labels (1-6) for the test set
 testdata3 <- read.table("./UCI HAR Dataset/test/y_test.txt")
 #Merging the test data into one data set by adding the subject labels and activities 
 #as variables in the data set
@@ -19,7 +19,7 @@ mergetest <- cbind(testdata1, testdata2, testdata3)
 traindata1 <- read.table("./UCI HAR Dataset/train/X_train.txt")
 #subject_train.txt contains the subject labels (1-30) for the training set
 traindata2 <- read.table("./UCI HAR Dataset/train/subject_train.txt")
-#y_train contains activities (1-6) for the training set
+#y_train contains activity labels (1-6) for the training set
 traindata3 <- read.table("./UCI HAR Dataset/train/y_train.txt")
 #Merging the training data into one data set by adding the subject labels and activities 
 #as variables in the data set
@@ -27,9 +27,9 @@ mergetrain <- cbind(traindata1, traindata2, traindata3)
 #Finishing step one by merging the observations in the training and test sets 
 #into one data set
 mergetesttrain <- rbind(mergetest, mergetrain)
+rm(list = c("traindata1", "traindata2", "traindata3", "testdata1", "testdata2", "testdata3"))
 
-
-#Reads feature labels which will be used, together with subject and activity, 
+#Reads feature names which will be used, together with subject and activity, 
 #as column names in the data set.
 features <- read.table("./UCI HAR Dataset/features.txt")
 newfeat <- c(as.character(features[,2]), "subject", "activity")
@@ -37,7 +37,7 @@ newfeat <- c(as.character(features[,2]), "subject", "activity")
 colnames(mergetesttrain) <- newfeat
 
 ## Step 2. Extract the features that contain mean and standard deviation for each measurement.
-## The features containing mean and standard deviation are interpreted as features 
+## The features containing mean and standard deviation are interpreted as features whose labels
 ## containing -mean() or -std(). The weighted average of the frequency components in a sample
 ## are not included, nor are the features obtained by averaging the signals in a signal window sample.
 ## This excludes the features measuring meanFreq or Gravity mean. 
@@ -45,7 +45,7 @@ colnames(mergetesttrain) <- newfeat
 
 ##Extracts the desired variables using the select method. 
 testtrainmeanstd <- select(mergetesttrain, contains("mean()"), contains("std()"), contains("subject"), contains("activity"), -contains("meanFreq"), -contains("angle"))
-
+rm(list = c("mergetest", "mergetesttrain", "mergetrain"))
 ## Step 3. Use descriptive activity names to name the activities in the data set
 
 ## Reading the activity names provided in activity_labels.txt
@@ -56,7 +56,8 @@ for (i in 1:6){
 }
 
 ## Step 4. Appropriately label the data set with descriptive variable names. 
-##Clean some of the variable names obtained from features.txt using gsub. 
+##This process is done through cleaning
+## of the feature labels obtained from features.txt using gsub. 
 ##Variable names changed to lower case
 NameVec <- tolower(names(testtrainmeanstd))
 ##Abbreviations are expanded
