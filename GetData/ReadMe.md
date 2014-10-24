@@ -15,7 +15,7 @@ activity and subject.
 Step 1. Merging the test data and training data into one data set. 
 Rows 9-29 read the data from text files using the read.table method. Labels for each activity
 and each subject are added as variables at the right side of the data set (right join).
-Same procedure repeated for the test set and the training set, which then are merged into 
+Same procedure is repeated for the test set and the training set, which then are merged into 
 one data set, named mergetesttrain, using rbind. At the end of this step, in rows 32-37,
 the variable names (i.e. feature names) are read from features.txt to be used as column names
 in the data set mergetesttrain.
