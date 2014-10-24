@@ -1,4 +1,4 @@
-ReadMe.md
+ReadMe.md  
 Read-me file for the method run_analysis.R, the course project in the Coursera course
 Getting and Cleaning data. 
 The method requires the dplyr package. 
